@@ -1,37 +1,110 @@
 <!DOCTYPE html>
 <html lang="en-US">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping list example</title>
-    <style>
-      li {
-        margin-bottom: 10px;
-      }
 
-      li button {
-        font-size: 12px;
-        margin-left: 20px;
-        color: #666;
-      }
-    </style>
-  </head>
-  <body>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shopping list example</title>
+  <style>
+    li {
+      margin-bottom: 10px;
+    }
 
-    <h1>My shopping list</h1>
+    li button {
+      font-size: 12px;
+      margin-left: 20px;
+      color: #666;
+    }
+  </style>
+</head>
 
-    <div>
-      <label for="item">Enter a new item:</label>
-      <input type="text" name="item" id="item">
-      <button>Add item</button>
-    </div>
+<body>
+  <h1>My shopping list</h1>
 
-    <ul>
+  <div>
+    <label for="item">Enter a new item:</label>
+    <input type="text" name="item" id="item" />
+    <button>Add item</button>
+  </div>
 
-    </ul>
+  <ul></ul>
 
-    <script>
+  <script>
+    // const list = document.querySelector("ul");
+    // const input = document.querySelector("input");
+    // const btn = document.querySelector("button");
+    // let storedValue;
 
-    </script>
-  </body>
+    // btn.addEventListener("click", () => {
+    //   if (input.value.trim() === "") return;
+
+    //   const item = document.createElement("li");
+    //   const span = document.createElement("span");
+    //   const delBtn = document.createElement("button");
+    //   delBtn.textContent = "Delete";
+    //   storedValue = input.value;
+    //   span.textContent = input.value;
+    //   item.appendChild(span);
+    //   item.appendChild(delBtn);
+    //   list.prepend(item);
+    //   input.value = "";
+
+    //   delBtn.addEventListener("click", () => {
+    //     item.remove();
+    //   });
+
+    //   input.focus();
+
+
+    // });
+    // Select DOM elements
+const list = document.querySelector("ul");                // List to hold items
+const input = document.querySelector("input");           // Input field for new items
+const btn = document.querySelector("button");           // Button to add items
+
+// Helper function to create a list item
+const createListItem = (text) => {
+    const item = document.createElement("li");           // Create list item
+    const span = document.createElement("span");         // Span to hold text
+    const delBtn = document.createElement("button");     // Button to delete item
+
+    span.textContent = text;                              // Set span text to input value
+    delBtn.textContent = "Delete";                       // Set delete button text
+    delBtn.setAttribute("aria-label", `Delete item: ${text}`); // Add accessibility label
+
+    delBtn.addEventListener("click", () => {             // Add click listener to delete button
+        item.classList.add("removing");                  // Add class for animation
+        setTimeout(() => item.remove(), 300);             // Remove item after animation
+    });
+
+    item.appendChild(span);                               // Append span to list item
+    item.appendChild(delBtn);                             // Append delete button to list item
+
+    return item;                                          // Return the complete list item
+};
+
+// Add event listener to the button
+btn.addEventListener("click", () => {
+    if (input.value.trim() === "") return;               // Prevent adding empty items
+
+    const newItem = createListItem(input.value);          // Create a new list item
+    list.prepend(newItem);                                // Add the new item to the top of the list
+
+    input.value = "";                                    // Clear the input field
+    input.focus();                                        // Refocus the input field for the next entry
+});
+
+// Optional: Add some CSS for animations
+const style = document.createElement("style");
+style.textContent = `
+    li { transition: opacity 0.3s ease, transform 0.3s ease; }   /* Smooth transitions */
+    li.removing { opacity: 0; transform: translateX(-20px); }    /* Animation for removal */
+    button { margin-left: 10px; }                                /* Space for delete button */
+    button:hover { background-color: red; color: white; }        /* Highlight delete button on hover */
+`;
+document.head.appendChild(style);
+
+  </script>
+</body>
+
 </html>
